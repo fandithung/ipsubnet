@@ -2,6 +2,7 @@ package ipsubnet
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -36,4 +37,42 @@ func (s *Ip) GetBroadcastAddress() string {
 	networkRangeQuads = append(networkRangeQuads, fmt.Sprintf("%d", (networkQuads[3]&(s.subnet_mask>>0))+(((numberIPAddress-1)>>0)&0xFF)))
 
 	return strings.Join(networkRangeQuads, ".")
+}
+
+func (s *Ip) PreviousIPAddress() (Ip, error) {
+	ipByte := s.GetIPAddressByte()
+
+	lenSlice := len(ipByte)
+
+	ipStrings := make([]string, lenSlice)
+	for c := lenSlice - 1; c >= 0; c-- {
+		ipByte[c]--
+		if ipByte[c] != 255 {
+			break
+		}
+	}
+	for i, s := range ipByte {
+		ipStrings[i] = strconv.Itoa(int(s))
+	}
+
+	return Ip{ip: strings.Join(ipStrings, ".")}, nil
+}
+
+func (s *Ip) NextIPAddress() (Ip, error) {
+	ipByte := s.GetIPAddressByte()
+
+	lenSlice := len(ipByte)
+
+	ipStrings := make([]string, lenSlice)
+	for c := lenSlice - 1; c >= 0; c-- {
+		ipByte[c]++
+		if ipByte[c] > 0 {
+			break
+		}
+	}
+	for i, s := range ipByte {
+		ipStrings[i] = strconv.Itoa(int(s))
+	}
+
+	return Ip{ip: strings.Join(ipStrings, ".")}, nil
 }

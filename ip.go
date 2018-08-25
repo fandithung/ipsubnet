@@ -32,3 +32,17 @@ func convertQuardsToInt(splits []string) []int {
 
 	return quardsInt
 }
+
+func convertQuardsToByte(splits []string) []byte {
+	quardsByte := make([]byte, len(splits))
+
+	for i, quard := range splits {
+		j, err := strconv.Atoi(quard)
+		if err != nil {
+			panic(err)
+		}
+		quardsByte[i] = byte(j)
+	}
+
+	return quardsByte
+}

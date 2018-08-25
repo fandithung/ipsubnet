@@ -23,6 +23,12 @@ func (s *Ip) GetIPAddressQuads() []int {
 	return convertQuardsToInt(splits)
 }
 
+func (s *Ip) GetIPAddressByte() []byte {
+	splits := strings.Split(s.ip, ".")
+
+	return convertQuardsToByte(splits)
+}
+
 func (s *Ip) ipAddressCalculation(format, separator string) string {
 
 	splits := s.GetIPAddressQuads()
